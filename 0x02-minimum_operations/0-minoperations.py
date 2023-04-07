@@ -8,4 +8,3 @@ def min_operations(n):
                 dp[i] = min(dp[i], dp[i // j] + j)
         dp[i] = min(dp[i], dp[i - 1] + 1)
     return dp[n]
-h
