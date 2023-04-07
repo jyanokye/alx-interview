@@ -1,24 +1,27 @@
 #!/usr/bin/python3
-"""Minimum operations"""
 
-def min_operations(n):
+"""
+    Minimum operations project
+"""
+
+
+def minOperations(n):
     """
-       function for the minimum
-       operation
-       return:
-              minimum number of operations
-    """ 
-    if n < 2:
-        return 0
+        Function of the minimum operation
+        return:
+               number of minimum operations
+    """
 
-    operations, factor = 0, 2
-
-    while factor <= n:
-        if n % factor == 0:
-            operations += factor
-            n //= factor
-            factor -= 1
-
-        factor += 1
-
-    return operations
+    a = 1
+    b = 0
+    operation = 0
+    while a < n:
+        left_over = n - a
+        if (left_over % a == 0):
+            b = a
+            a += b
+            operation += 2
+        else:
+            a += b
+            operation += 1
+    return operation
