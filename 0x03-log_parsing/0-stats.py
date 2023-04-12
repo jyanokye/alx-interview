@@ -3,43 +3,52 @@
 import sys
 
 
-def print_stats(total_size, status_counts):
+def print_stats(code_count, total_size):
     """
-    Print statistics for the given total size,status code counts
+    Prints statistics about HTTP status codes and total file size.
+    Args:
+        code_count: a dictionary of status codes and their counts
+        total_size: the total size of the file
+    Returns:
+        None
     """
+
     print("Total file size: {}".format(total_size))
-    for code in sorted(status_counts.keys()):
-        count = status_counts.get(code, 0)
-        if count > 0:
+    for code, count in sorted(code_count.items()):
+        if count != 0:
             print("{}: {}".format(code, count))
 
-def process_lines():
-    """
-    Reads lines from standard input,and print statistics
-    """
-    total_size = 0
-    status_counts = {"200": 0, "301": 0, "400": 0, "401": 0, "403": 0, "404": 0, "405": 0, "500": 0}
-    line_num = 0
-    
-    try:
-        for line in sys.stdin:
-            line = line.strip()
-            parts = line.split()
-            if len(parts) != 7:
-                continue
-            ip, _, _, path, status, size = parts
-            if not status.isdigit():
-                continue
-            status_counts[status] = status_counts.get(status, 0) + 1
-            if size.isdigit():
-                total_size += int(size)
-            line_num += 1
-            if line_num % 10 == 0:
-                print_stats(total_size, status_counts)
-    except KeyboardInterrupt:
-        pass
 
-    print_stats(total_size, status_counts)
+total_size = 0
+code = 0
+counter = 0
+code_count = {"200": 0,
+              "301": 0,
+              "400": 0,
+              "401": 0,
+              "403": 0,
+              "404": 0,
+              "405": 0,
+              "500": 0}
 
-if __name__ == '__main__':
-    process_lines()
+try:
+    for line in sys.stdin:
+        parsed_line = line.split()  # split line into fields
+        parsed_line = parsed_line[::-1]  # reverse the order of fields
+
+        if len(parsed_line) > 2:
+            counter += 1
+
+            if counter <= 10:
+                total_size += int(parsed_line[0])  # add file size to total
+                code = parsed_line[1]  # get status code
+
+                if (code in code_count.keys()):
+                    code_count[code] += 1  # increment count for status code
+
+            if (counter == 10):
+                print_stats(code_count, total_size)  # print stats for batch
+                counter = 0
+
+finally:
+    print_stats(code_count, total_size)  # print final stats for last batch
