@@ -12,54 +12,43 @@ def print_stats(code_count, total_size):
     Returns:
         None
     """
-    print(f"File size: {total_size}")
-    for key, value in sorted(code_count.items()):
-        if value != 0:
-            print(f"{key}: {value}")
+
+    print("Total file size: {}".format(total_size))
+    for code, count in sorted(code_count.items()):
+        if count != 0:
+            print("{}: {}".format(code, count))
 
 
-# Initialize variables
 total_size = 0
-code_count = {
-    "200": 0,
-    "301": 0,
-    "400": 0,
-    "401": 0,
-    "403": 0,
-    "404": 0,
-    "405": 0,
-    "500": 0,
-}
-count_lines = 0
+code = 0
+counter = 0
+code_count = {"200": 0,
+              "301": 0,
+              "400": 0,
+              "401": 0,
+              "403": 0,
+              "404": 0,
+              "405": 0,
+              "500": 0}
 
-# Read lines from input and process them
-for line in sys.stdin:
-    # Split line into fields
-    fields = line.split()
-    # Reverse fields
-    fields.reverse()
+try:
+    for line in sys.stdin:
+        parsed_line = line.split()  # split line into fields
+        parsed_line = parsed_line[::-1]  # reverse the order of fields
 
-    # If there are at least three fields
-    if len(fields) >= 3:
-        # Increment line counter
-        count_lines += 1
+        if len(parsed_line) > 2:
+            counter += 1
 
-        # If the line counter is 10, print statistics and reset counter
-        if count_lines == 10:
-            print_stats(code_count, total_size)
-            count_lines = 0
+            if counter <= 10:
+                total_size += int(parsed_line[0])  # add file size to total
+                code = parsed_line[1]  # get status code
 
-        # Parse file size and status code
-        file_size = int(fields[0])
-        status_code = fields[1]
+                if (code in code_count.keys()):
+                    code_count[code] += 1  # increment count for status code
 
-        # Increment status code count
-        if status_code in code_count:
-            code_count[status_code] += 1
+            if (counter == 10):
+                print_stats(code_count, total_size)  # print stats for batch
+                counter = 0
 
-        # Increment total file size
-        total_size += file_size
-
-# Print final statistics
-if count_lines != 0:
-    print_stats(code_count, total_size)
+finally:
+    print_stats(code_count, total_size)  # print final stats for last batch
