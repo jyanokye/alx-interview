@@ -1,6 +1,7 @@
-#!/usr/bin/env python3
+#!/usr/bin/python3
 
 import sys
+
 
 def print_stats(code_count, total_size):
     """
