@@ -13,7 +13,7 @@ def print_stats(code_count, total_size):
         None
     """
 
-    print("Total file size: {}".format(total_size))
+    print("File size: {}".format(total_size))
     for code, count in sorted(code_count.items()):
         if count != 0:
             print("{}: {}".format(code, count))
