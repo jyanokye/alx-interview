@@ -22,6 +22,9 @@ def validUTF8(data):
             while byte_mask & byte:
                 num_bytes += 1
                 byte_mask = byte_mask >> 1
+            
+            if num_bytes == 0:
+                continue
 
             # Invalid number of bytes
             if num_bytes == 0 or num_bytes > 4:
