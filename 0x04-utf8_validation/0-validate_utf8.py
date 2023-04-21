@@ -2,8 +2,6 @@
 """ Validation of UTF8  """
 
 
-
-
 def validUTF8(data):
     """
     Determines if a given byte sequence represents a valid UTF-8 encoding.
