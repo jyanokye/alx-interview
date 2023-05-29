@@ -11,10 +11,10 @@ def isWinner(x, nums):
 
             if is_maria_turn:
                 is_maria_turn = False
-                wins["Maria"] += 1
+                wins["Ben"] += 1  # Increment Ben's wins instead of Maria's
             else:
                 is_maria_turn = True
-                wins["Ben"] += 1
+                wins["Maria"] += 1  # Increment Maria's wins instead of Ben's
 
             while n % prime == 0:
                 n //= prime
